@@ -4,7 +4,7 @@ export function addBookConfiguration(object){
     console.log("move---->",object);   
     return axios({
         method:'post',
-        url:'http://localhost:8080/bookstore/addbook',
+        url:'http://localhost:8080/bookstore/admin/addbook',
         data:{
             bookName:object.Title,
             authorName:object.Author,
@@ -19,7 +19,7 @@ export function addBookConfiguration(object){
 
 export  function addUploadConfiguration(formData){      
      return axios({
-      url:'http://localhost:8080/bookstore/uploadimage',
+      url:'http://localhost:8080/bookstore/admin/uploadimage',
       method: 'POST',
       data: formData,
       headers:{
