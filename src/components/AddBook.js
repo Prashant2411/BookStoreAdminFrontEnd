@@ -8,6 +8,7 @@ import {addBookConfiguration,addUploadConfiguration} from '../Configuration/conf
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import MenuBookIcon from "@material-ui/icons/MenuBookSharp";
+import Styles from "../snackbar.module.css";
 
 const useStyles = theme => ({
   grow: {
@@ -70,7 +71,9 @@ class BasicTextFields extends Component {
     Year: "",
     BookDetails: "",
     files: "",
-    imgName: ""
+    imgName: "",
+    status:"Book Added Successfully",
+    isActive : false
   };
 
   changeUrl = event => {
@@ -81,12 +84,16 @@ class BasicTextFields extends Component {
     this.setState({ [event.target.name]: event.target.value })
   }
 
-  addBook = () => {
-    addBookConfiguration(this.state);
-  }
-  
+  openSnackBar = async (event) => {
+    await this.setState({ isActive: true }, () => {
+      setTimeout(() => {
+        this.setState({ isActive: false });
+      }, 3000);
+    });
+  };
+
   validateAuthor = (event) => {
-    const regexp = /^[A-Za-z]{3,20}$/;
+    const regexp = /[A-Za-z]{3,20}$/;
     const char=event.target.value;
     if(!regexp.test(char)){
       alert("Invalid Author Name")
@@ -113,6 +120,18 @@ class BasicTextFields extends Component {
       })
     }
   }
+  
+  addBook = () => {
+    this.openSnackBar();
+      addBookConfiguration(this.state);
+      // .then(()=>{
+      //   this.setState({
+      //     status:"added"
+      //   })
+       
+      // })
+     
+    }
 
   uploadButtonClick = async (event) => {
     await this.setState({
@@ -125,8 +144,11 @@ class BasicTextFields extends Component {
       this.setState({
         files:response.data
       })
+    
     })
   }
+
+ 
 
   render() {
     const { classes } = this.props;
@@ -142,8 +164,19 @@ class BasicTextFields extends Component {
         </Toolbar>
       </AppBar>
     </div>
-      <form onSubmit={this.addBook} className={classes.root} autoComplete="off">
-        <Typography
+    <div
+          className={
+            this.state.isActive
+              ? [Styles.snackbar, Styles.show].join(" ")
+              : Styles.snackbar
+          }
+        > 
+          {this.state.status}
+        </div>
+   
+      <form className={classes.root} onSubmit={this.addBook} autoComplete="off" >
+       
+     <Typography
           className={classes.heading}
           variant="h4"
           component="h2"
@@ -225,10 +258,13 @@ class BasicTextFields extends Component {
           type="submit"
           className={classes.addBook}
           variant="contained"
+        //  onClick={this.addBook}
         >
           Add Book
         </Button>
-      </form>
+        </form>
+      
+     
       </Fragment>
     );
   }
