@@ -8,7 +8,6 @@ import {addBookConfiguration,addUploadConfiguration} from '../Configuration/conf
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import MenuBookIcon from "@material-ui/icons/MenuBookSharp";
-import Styles from "../snackbar.module.css";
 
 const useStyles = theme => ({
   grow: {
@@ -71,9 +70,8 @@ class BasicTextFields extends Component {
     Year: "",
     BookDetails: "",
     files: "",
-    imgName: "",
-    status:"Book Added Successfully",
-    isActive : false
+    imgName: ""
+    
   };
 
   changeUrl = event => {
@@ -84,13 +82,6 @@ class BasicTextFields extends Component {
     this.setState({ [event.target.name]: event.target.value })
   }
 
-  openSnackBar = async (event) => {
-    await this.setState({ isActive: true }, () => {
-      setTimeout(() => {
-        this.setState({ isActive: false });
-      }, 3000);
-    });
-  };
 
   validateAuthor = (event) => {
     const regexp = /[A-Za-z]{3,20}$/;
@@ -122,14 +113,10 @@ class BasicTextFields extends Component {
   }
   
   addBook = () => {
-    this.openSnackBar();
+    
       addBookConfiguration(this.state);
-      // .then(()=>{
-      //   this.setState({
-      //     status:"added"
-      //   })
-       
-      // })
+      alert("Book Added SuccessFully  ")
+      
      
     }
 
@@ -146,9 +133,7 @@ class BasicTextFields extends Component {
       })
     
     })
-  }
-
- 
+  } 
 
   render() {
     const { classes } = this.props;
@@ -164,15 +149,7 @@ class BasicTextFields extends Component {
         </Toolbar>
       </AppBar>
     </div>
-    <div
-          className={
-            this.state.isActive
-              ? [Styles.snackbar, Styles.show].join(" ")
-              : Styles.snackbar
-          }
-        > 
-          {this.state.status}
-        </div>
+    
    
       <form className={classes.root} onSubmit={this.addBook} autoComplete="off" >
        
